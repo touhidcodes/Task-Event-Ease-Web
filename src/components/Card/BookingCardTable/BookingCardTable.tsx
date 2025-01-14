@@ -10,6 +10,7 @@ import Paper from "@mui/material/Paper";
 
 import { Button } from "@mui/material";
 import { TEvent } from "@/types/Events";
+import { TEventBookings } from "@/types/Bookings";
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -28,11 +29,10 @@ const StyledTableRow = styled(TableRow)(() => ({
 }));
 
 type TEventCardProps = {
-  events: TEvent[];
-  handleBooking?: (eventId: string) => void;
+  bookings: TEventBookings[];
 };
 
-const eventCardTable = ({ events, handleBooking }: TEventCardProps) => {
+const BookingCardTable = ({ bookings }: TEventCardProps) => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -42,25 +42,23 @@ const eventCardTable = ({ events, handleBooking }: TEventCardProps) => {
             <StyledTableCell align="center">Location</StyledTableCell>
             <StyledTableCell align="center">Date</StyledTableCell>
             <StyledTableCell align="center">Attendees</StyledTableCell>
-            {handleBooking && (
-              <StyledTableCell align="center">Action</StyledTableCell>
-            )}
           </TableRow>
         </TableHead>
         <TableBody>
-          {events.map((event: TEvent) => (
-            <StyledTableRow key={event.id}>
-              <StyledTableCell align="right">{event?.name}</StyledTableCell>
-              <StyledTableCell align="right">{event?.location}</StyledTableCell>
-              <StyledTableCell align="right">{event.date}</StyledTableCell>
+          {bookings.map((booking: TEventBookings) => (
+            <StyledTableRow key={booking.id}>
               <StyledTableCell align="right">
-                {event.maxAttendees}
+                {booking?.event?.name}
               </StyledTableCell>
-              {handleBooking && (
-                <StyledTableCell align="right">
-                  <Button onClick={() => handleBooking(event.id)}>Book</Button>
-                </StyledTableCell>
-              )}
+              <StyledTableCell align="right">
+                {booking?.event?.location}
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                {booking?.event?.date}
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                {booking?.event?.maxAttendees}
+              </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
@@ -69,4 +67,4 @@ const eventCardTable = ({ events, handleBooking }: TEventCardProps) => {
   );
 };
 
-export default eventCardTable;
+export default BookingCardTable;

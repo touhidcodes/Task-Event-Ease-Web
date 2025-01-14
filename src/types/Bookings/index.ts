@@ -1,13 +1,8 @@
-type TFlatBookings = {
-  title: string;
-  location: string;
-  rent: number;
-};
+import { TEvent } from "../Events";
 
-export type TBookings = {
+export type TEventBookings = {
   id: string;
-  flat: TFlatBookings;
-  flatId: string;
-  status: string;
   userId: string;
+  eventId: number;
+  event: TEvent;
 };

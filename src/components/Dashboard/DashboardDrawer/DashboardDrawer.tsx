@@ -31,6 +31,7 @@ import EventIcon from "@mui/icons-material/Event";
 import { styled } from "@mui/material/styles";
 import { logoutUser } from "@/services/actions/logoutUser";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const drawerWidth = 300;
 
@@ -254,7 +255,7 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
                   }}
                   fullWidth
                 >
-                  Create Event
+                  <Link href={"/dashboard/create"}>Create Event</Link>
                 </Button>
               </Box>
               {/* <AccountMenu /> */}

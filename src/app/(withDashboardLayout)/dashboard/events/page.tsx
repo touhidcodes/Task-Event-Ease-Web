@@ -2,13 +2,12 @@
 
 import { Container, Typography } from "@mui/material";
 import EventCardTable from "@/components/Card/EventCardTable/EventCardTable";
-import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import Loading from "@/components/UI/Loading/Loading";
 import { useGetAllEventsQuery } from "@/redux/api/eventAPI";
 import { useBookingRequestMutation } from "@/redux/api/attendeeApi";
 
-const AllPostsPage = () => {
+const EventsPage = () => {
   const { data: events, isLoading } = useGetAllEventsQuery({});
   const [bookingRequest] = useBookingRequestMutation();
 
@@ -39,4 +38,4 @@ const AllPostsPage = () => {
   );
 };
 
-export default AllPostsPage;
+export default EventsPage;
