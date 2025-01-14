@@ -309,7 +309,15 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
         }}
       >
         <Toolbar />
-        <Box style={{ backgroundColor: "#EBF0F4" }}>{children}</Box>
+        <Box
+          style={{
+            backgroundColor: "#EBF0F4",
+            minHeight: "100vh",
+            width: "100%",
+          }}
+        >
+          {children}
+        </Box>
       </Box>
     </Box>
   );

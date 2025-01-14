@@ -5,27 +5,12 @@ import { jwtDecode } from "jwt-decode";
 const AuthRoutes = ["/login", "/register"];
 const commonPrivateRoutes = [
   "/dashboard/home",
-  "/dashboard/profile",
-  "/dashboard/change-password",
-  "/post",
-  /^\/booking\/[^/].+$/,
-  /^\/review\/[^/].+$/,
+  "/dashboard/events",
+  "/dashboard/create",
 ];
 const roleBasedPrivateRoutes = {
-  USER: [
-    /^\/dashboard\/my-bookings/,
-    /^\/dashboard\/my-posts/,
-    /^\/dashboard\/my-reviews/,
-    /^\/checkout\/.+$/,
-    /^\/checkout\/success/,
-    /^\/checkout\/cancel/,
-  ],
-  ADMIN: [
-    /^\/dashboard\/all-user/,
-    /^\/dashboard\/all-posts/,
-    /^\/dashboard\/all-bookings/,
-    /^\/dashboard\/all-reviews/,
-  ],
+  USER: [/^\/dashboard\/my-events/, /^\/dashboard\/booked/],
+  ADMIN: [/^\/dashboard\/attendees/, /^\/dashboard\/users/],
 };
 
 type Role = keyof typeof roleBasedPrivateRoutes;
@@ -79,13 +64,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/login",
-    "/register",
-    "/post",
-    "/dashboard/:path*",
-    "/booking/:path*",
-    "/checkout/:path*",
-    "/review/:path*",
-  ],
+  matcher: ["/login", "/register", "/dashboard/:path*"],
 };

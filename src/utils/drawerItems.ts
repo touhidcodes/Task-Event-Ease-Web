@@ -57,7 +57,7 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
         },
         {
           title: "Booked Events",
-          path: `my-posts`,
+          path: `booked`,
           icon: EventAvailableIcon,
         }
       );
