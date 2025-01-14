@@ -1,14 +1,14 @@
 import { DrawerItem, UserRole } from "@/types";
 
 //icons
-
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import HomeWorkIcon from "@mui/icons-material/HomeWork";
-import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
+import EditCalendarIcon from "@mui/icons-material/EditCalendar";
+import GroupIcon from "@mui/icons-material/Group";
 import PersonIcon from "@mui/icons-material/Person";
+import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ReviewsIcon from "@mui/icons-material/Reviews";
-import KeyIcon from "@mui/icons-material/Key";
+import EventIcon from "@mui/icons-material/Event";
+import EventNoteIcon from "@mui/icons-material/EventNote";
 import { USER_ROLE } from "@/constants/role";
 
 export const drawerItems = (role: UserRole): DrawerItem[] => {
@@ -16,9 +16,19 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
 
   const defaultMenus = [
     {
-      title: "Change Password",
-      path: `change-password`,
-      icon: KeyIcon,
+      title: "Home",
+      path: `home`,
+      icon: DashboardIcon,
+    },
+    {
+      title: "Events",
+      path: `events`,
+      icon: EventIcon,
+    },
+    {
+      title: "Create Event",
+      path: `create`,
+      icon: EditCalendarIcon,
     },
   ];
 
@@ -26,34 +36,14 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
     case USER_ROLE.ADMIN:
       roleMenus.push(
         {
-          title: "Home",
-          path: `home`,
-          icon: DashboardIcon,
+          title: "Attendees",
+          path: `attendees`,
+          icon: GroupIcon,
         },
         {
-          title: "Profile",
-          path: `profile`,
+          title: "Users",
+          path: `users`,
           icon: PersonIcon,
-        },
-        {
-          title: "All Users",
-          path: `all-user`,
-          icon: SupervisedUserCircleIcon,
-        },
-        {
-          title: "All Posts",
-          path: `all-posts`,
-          icon: HomeWorkIcon,
-        },
-        {
-          title: "All Bookings",
-          path: `all-bookings`,
-          icon: ShoppingCartIcon,
-        },
-        {
-          title: "All Reviews",
-          path: `all-reviews`,
-          icon: ReviewsIcon,
         }
       );
       break;
@@ -61,24 +51,14 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
     case USER_ROLE.USER:
       roleMenus.push(
         {
-          title: "Profile",
-          path: `profile`,
-          icon: PersonIcon,
+          title: "My Events",
+          path: `my-events`,
+          icon: EventNoteIcon,
         },
         {
-          title: "My Posts",
+          title: "Booked Events",
           path: `my-posts`,
-          icon: HomeWorkIcon,
-        },
-        {
-          title: "My Bookings",
-          path: `my-bookings`,
-          icon: ShoppingCartIcon,
-        },
-        {
-          title: "My Reviews",
-          path: `my-reviews`,
-          icon: ReviewsIcon,
+          icon: EventAvailableIcon,
         }
       );
       break;
@@ -87,5 +67,5 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
       break;
   }
 
-  return [...roleMenus, ...defaultMenus];
+  return [...defaultMenus, ...roleMenus];
 };
