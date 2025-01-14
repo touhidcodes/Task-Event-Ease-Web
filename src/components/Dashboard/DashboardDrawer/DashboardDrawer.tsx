@@ -29,6 +29,8 @@ import {
 import { useRef, useState } from "react";
 import EventIcon from "@mui/icons-material/Event";
 import { styled } from "@mui/material/styles";
+import { logoutUser } from "@/services/actions/logoutUser";
+import { useRouter } from "next/navigation";
 
 const drawerWidth = 300;
 
@@ -62,6 +64,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const { data, isLoading } = useGetSingleUserQuery({});
@@ -72,17 +75,12 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
 
   const handleToggle = () => setOpen((prev) => !prev);
   const handleClose = () => setOpen(false);
+  const router = useRouter();
 
-  const handleLogout = () => {
-    console.log("User logged out");
-    // Add your logout functionality here
-  };
-
-  // Mock user data
-  const user = {
-    avatar: "/avatar-placeholder.png", // Replace with actual avatar URL
-    username: "John Doe",
-    email: "johndoe@example.com",
+  const handleLogOut = async () => {
+    setIsLoggingOut(true);
+    await logoutUser();
+    router.push("/");
   };
 
   const handleDrawerClose = () => {
@@ -101,7 +99,7 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
   };
 
   const placeholder =
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUOdfo4lewXJYT_2xPo_Xu2Lj6XPn78X9UJA&s";
+    "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde";
 
   return (
     <Box sx={{ display: "flex", backgroundColor: "#EBF0F4", height: "full" }}>
@@ -161,7 +159,7 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
               >
                 <Avatar
                   alt="John Doe"
-                  src="/path-to-avatar.jpg" // Replace with your avatar image path
+                  src={userProfile?.image || placeholder}
                   ref={anchorRef}
                   onClick={handleToggle}
                   style={{ cursor: "pointer" }}
@@ -197,14 +195,14 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
                   >
                     {/* Avatar */}
                     <Avatar
-                      src={user.avatar}
-                      alt={user.username}
+                      src={userProfile?.image || placeholder}
+                      alt={userProfile?.username}
                       sx={{ width: 60, height: 60, mx: "auto", mb: 1 }}
                     />
 
                     {/* Username */}
                     <Typography variant="h6" sx={{ mb: 0.5 }}>
-                      {user.username}
+                      {userProfile?.username}
                     </Typography>
 
                     {/* Email */}
@@ -213,19 +211,20 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
                       color="text.secondary"
                       sx={{ mb: 2 }}
                     >
-                      {user.email}
+                      {userProfile?.email}
                     </Typography>
 
                     {/* Logout Button */}
                     <Button
                       variant="contained"
                       fullWidth
-                      onClick={handleLogout}
+                      onClick={handleLogOut}
                       sx={{
-                        backgroundColor: "#ff4d4f",
-                        color: "#fff",
+                        backgroundColor: "#0B1134",
+                        color: "white",
+                        padding: "10px",
                         "&:hover": {
-                          backgroundColor: "#ff3338",
+                          backgroundColor: "#061022",
                         },
                       }}
                     >

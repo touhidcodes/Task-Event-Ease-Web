@@ -1,10 +1,13 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 export const deleteCookies = (keys: string[]) => {
-  const cookiesInstance = cookies();
+  const response = NextResponse.next();
+
   keys.forEach((key) => {
-    cookiesInstance.delete(key);
+    response.cookies.set(key, "", { maxAge: 0, path: "/" });
   });
+
+  return response;
 };

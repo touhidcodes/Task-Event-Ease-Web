@@ -5,16 +5,47 @@ import { TextField, Button, Box, Stack, Typography, Grid } from "@mui/material";
 import Link from "next/link";
 import PHForm from "@/components/Forms/PHForm";
 import PHInput from "@/components/Forms/PHInput";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginValidationSchema } from "@/constants/schema";
+import { useRouter } from "next/navigation";
+import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
+import { userLogin } from "@/services/actions/userLogin";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
 
-  const handleLogin = () => {
-    // Add login functionality
-    console.log("Login attempted with:", { email, password });
+  const handleLogin = async (values: FieldValues) => {
+    try {
+      const res = await userLogin(values);
+
+      if (res?.data?.token) {
+        toast.success(res?.message);
+        router.push("/dashboard/home");
+      } else {
+        setError(res.message);
+        console.log(res.message);
+      }
+    } catch (err: any) {
+      console.error(err.message);
+    }
   };
 
+  const handleTestLogin = async (role: "admin" | "user") => {
+    const credentials =
+      role === "admin"
+        ? {
+            identifier: `${process.env.NEXT_PUBLIC_ADMIN_EMAIL}`,
+            password: `${process.env.NEXT_PUBLIC_ADMIN_PASSWORD}`,
+          }
+        : {
+            identifier: `${process.env.NEXT_PUBLIC_USER_EMAIL}`,
+            password: `${process.env.NEXT_PUBLIC_USER_PASSWORD}`,
+          };
+
+    handleLogin(credentials);
+  };
   return (
     <div className="min-h-screen flex">
       {/* Left Panel (Image) */}
@@ -24,7 +55,7 @@ export default function Login() {
           backgroundSize: "cover",
           backgroundPosition: "center",
           height: "100vh",
-          display: { xs: "none", sm: "block" }, // Hide image on mobile
+          display: { xs: "none", sm: "block" },
           width: { sm: "50%", md: "33.33%" },
           color: "#fff",
           textAlign: "center",
@@ -44,7 +75,7 @@ export default function Login() {
           }}
         >
           <Typography variant="h4" sx={{ margin: 0 }}>
-            Welcome to the Event
+            Welcome to the Event Ease
           </Typography>
           <Typography variant="body1">
             Experience the magic of the moment.
@@ -88,7 +119,7 @@ export default function Login() {
           </Typography>
 
           {/* Error Message */}
-          {/* {error && (
+          {error && (
             <Typography
               sx={{
                 color: "red",
@@ -97,12 +128,12 @@ export default function Login() {
             >
               {error}
             </Typography>
-          )} */}
+          )}
 
           {/* Form */}
           <PHForm
             onSubmit={handleLogin}
-            // resolver={zodResolver(loginValidationSchema)}
+            resolver={zodResolver(loginValidationSchema)}
             defaultValues={{
               identifier: "",
               password: "",
@@ -177,7 +208,7 @@ export default function Login() {
                 },
               }}
               fullWidth
-              //   onClick={() => handleTestLogin("user")}
+              onClick={() => handleTestLogin("user")}
             >
               Test User
             </Button>
@@ -193,7 +224,7 @@ export default function Login() {
                 },
               }}
               fullWidth
-              //   onClick={() => handleTestLogin("admin")}
+              onClick={() => handleTestLogin("admin")}
             >
               Test Admin
             </Button>
