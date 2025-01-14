@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -9,21 +8,82 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import SideBar from "../SideBar/SideBar";
-import { Avatar, Badge, Stack } from "@mui/material";
+import {
+  Avatar,
+  Badge,
+  Button,
+  ClickAwayListener,
+  FormControl,
+  Menu,
+  MenuItem,
+  Modal,
+  Popper,
+  Select,
+  Stack,
+} from "@mui/material";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import {
   useGetSingleUserQuery,
   useGetUserWithProfileQuery,
 } from "@/redux/api/userApi";
-import AuthButton from "@/components/UI/AuthButton.tsx/AuthButton";
+import { useRef, useState } from "react";
+import EventIcon from "@mui/icons-material/Event";
+import { styled } from "@mui/material/styles";
 
 const drawerWidth = 300;
 
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    backgroundColor: "#44b700",
+    color: "#44b700",
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    "&::after": {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%",
+      animation: "ripple 1.2s infinite ease-in-out",
+      border: "1px solid currentColor",
+      content: '""',
+    },
+  },
+  "@keyframes ripple": {
+    "0%": {
+      transform: "scale(.8)",
+      opacity: 1,
+    },
+    "100%": {
+      transform: "scale(2.4)",
+      opacity: 0,
+    },
+  },
+}));
+
 const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [isClosing, setIsClosing] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const { data, isLoading } = useGetSingleUserQuery({});
   const { data: userProfile } = useGetUserWithProfileQuery({});
+
+  const [open, setOpen] = useState(false);
+  const anchorRef = useRef(null);
+
+  const handleToggle = () => setOpen((prev) => !prev);
+  const handleClose = () => setOpen(false);
+
+  const handleLogout = () => {
+    console.log("User logged out");
+    // Add your logout functionality here
+  };
+
+  // Mock user data
+  const user = {
+    avatar: "/avatar-placeholder.png", // Replace with actual avatar URL
+    username: "John Doe",
+    email: "johndoe@example.com",
+  };
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -83,7 +143,7 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
                 Hi, {isLoading ? "Loading..." : data?.username}
               </Typography>
               <Typography variant="h6" noWrap sx={{ color: "#00026E" }}>
-                Welcome to Flat Mate Finder
+                Welcome to Event Ease
               </Typography>
             </Box>
             <Stack direction="row" gap={3} alignItems="center">
@@ -92,8 +152,112 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
                   <NotificationsNoneIcon color="action" />
                 </IconButton>
               </Badge>
-              <Avatar alt={"name"} src={userProfile?.image || placeholder} />
-              <AuthButton />
+
+              {/* Avatar that triggers the dropdown */}
+              <StyledBadge
+                overlap="circular"
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                variant="dot"
+              >
+                <Avatar
+                  alt="John Doe"
+                  src="/path-to-avatar.jpg" // Replace with your avatar image path
+                  ref={anchorRef}
+                  onClick={handleToggle}
+                  style={{ cursor: "pointer" }}
+                />
+              </StyledBadge>
+
+              {/* Popper */}
+              <Popper
+                open={open}
+                anchorEl={anchorRef.current}
+                placement="bottom-start"
+                disablePortal
+                modifiers={[
+                  {
+                    name: "offset",
+                    options: {
+                      offset: [0, 10],
+                    },
+                  },
+                ]}
+                style={{ zIndex: 1300 }}
+              >
+                <ClickAwayListener onClickAway={handleClose}>
+                  <Box
+                    sx={{
+                      width: 250,
+                      bgcolor: "background.paper",
+                      boxShadow: 3,
+                      borderRadius: 2,
+                      p: 2,
+                      textAlign: "center",
+                    }}
+                  >
+                    {/* Avatar */}
+                    <Avatar
+                      src={user.avatar}
+                      alt={user.username}
+                      sx={{ width: 60, height: 60, mx: "auto", mb: 1 }}
+                    />
+
+                    {/* Username */}
+                    <Typography variant="h6" sx={{ mb: 0.5 }}>
+                      {user.username}
+                    </Typography>
+
+                    {/* Email */}
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mb: 2 }}
+                    >
+                      {user.email}
+                    </Typography>
+
+                    {/* Logout Button */}
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      onClick={handleLogout}
+                      sx={{
+                        backgroundColor: "#ff4d4f",
+                        color: "#fff",
+                        "&:hover": {
+                          backgroundColor: "#ff3338",
+                        },
+                      }}
+                    >
+                      Logout
+                    </Button>
+                  </Box>
+                </ClickAwayListener>
+              </Popper>
+              {/* Create Event Button */}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  startIcon={<EventIcon />}
+                  sx={{
+                    backgroundColor: "#0B1134",
+                    color: "white",
+                    padding: "10px",
+                    "&:hover": {
+                      backgroundColor: "#061022",
+                    },
+                  }}
+                  fullWidth
+                >
+                  Create Event
+                </Button>
+              </Box>
               {/* <AccountMenu /> */}
             </Stack>
           </Box>
