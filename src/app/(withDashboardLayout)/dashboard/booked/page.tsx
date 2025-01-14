@@ -1,7 +1,6 @@
 "use client";
 
 import { Container, Typography } from "@mui/material";
-import EventCardTable from "@/components/Card/EventCardTable/EventCardTable";
 import Loading from "@/components/UI/Loading/Loading";
 import { useGetMyBookingsQuery } from "@/redux/api/attendeeApi";
 import BookingCardTable from "@/components/Card/BookingCardTable/BookingCardTable";

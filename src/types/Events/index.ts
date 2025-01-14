@@ -1,7 +1,7 @@
 export type TEvent = {
   id: string;
   name: string;
-  date: String;
+  date: string;
   location: number;
   maxAttendees: number;
   isDeleted: boolean;

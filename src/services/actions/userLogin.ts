@@ -22,7 +22,7 @@ export const userLogin = async (data: FieldValues) => {
 
   if (userInfo.data.token) {
     // setToLocalStorage(authKey, userInfo.data.token);
-    setAccessToken(userInfo.data.token);
+    setAccessToken("accessToken", userInfo.data.token);
   }
 
   return userInfo;

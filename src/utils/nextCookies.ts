@@ -2,14 +2,13 @@
 
 import { cookies } from "next/headers";
 
-const cookieStore = cookies();
-
 // Function to set a cookie
 export const setCookie = async (key: string, value: string) => {
-  if (!key && !value) {
+  if (!key || !value) {
     return "";
   }
 
+  const cookieStore = await cookies(); // Await cookies() to resolve
   cookieStore.set(key, value);
 };
 
@@ -18,16 +17,19 @@ export const getCookie = async (key: string) => {
   if (!key) {
     return "";
   }
+
+  const cookieStore = await cookies(); // Await cookies() to resolve
   const authToken = cookieStore.get(key);
-  // console.log(authToken?.value);
-  return authToken;
+  return authToken?.value; // Return the cookie value
 };
 
 // Function to remove a cookie
-export const removeCookie = (keys: string[]) => {
-  if (!keys) {
+export const removeCookie = async (keys: string[]) => {
+  if (!keys || keys.length === 0) {
     return "";
   }
+
+  const cookieStore = await cookies(); // Await cookies() to resolve
   keys.forEach((key) => {
     cookieStore.delete(key);
   });

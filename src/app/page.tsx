@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { TextField, Button, Box, Stack, Typography, Grid } from "@mui/material";
+import { Button, Box, Stack, Typography, Grid } from "@mui/material";
 import Link from "next/link";
 import PHForm from "@/components/Forms/PHForm";
 import PHInput from "@/components/Forms/PHInput";
@@ -27,8 +27,8 @@ export default function Login() {
         setError(res.message);
         console.log(res.message);
       }
-    } catch (err: any) {
-      console.error(err.message);
+    } catch (err) {
+      console.error(err);
     }
   };
 

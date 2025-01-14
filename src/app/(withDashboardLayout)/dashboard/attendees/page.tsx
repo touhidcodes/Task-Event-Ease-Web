@@ -2,10 +2,7 @@
 
 import { Container, Typography } from "@mui/material";
 import Loading from "@/components/UI/Loading/Loading";
-import {
-  useGetAllAttendeesQuery,
-  useGetMyBookingsQuery,
-} from "@/redux/api/attendeeApi";
+import { useGetAllAttendeesQuery } from "@/redux/api/attendeeApi";
 import AttendeesCardTable from "@/components/Card/AttendeesCardTable/AttendeesCardTable";
 
 const MyEventsPage = () => {

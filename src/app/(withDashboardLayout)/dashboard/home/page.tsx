@@ -14,7 +14,6 @@ import {
   CardContent,
   CardMedia,
 } from "@mui/material";
-import { toast } from "sonner";
 
 const background =
   "https://images.unsplash.com/photo-1636690424408-4330adc3e583";

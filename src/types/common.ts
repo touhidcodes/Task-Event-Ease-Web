@@ -9,6 +9,7 @@ export type IMeta = {
 };
 
 export type ResponseSuccessType = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
   meta?: IMeta;
 };
@@ -30,7 +31,9 @@ export interface DrawerItem {
   title: string;
   path: string;
   parentPath?: string;
-  icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string };
+  icon?: OverridableComponent<SvgIconTypeMap<object, "svg">> & {
+    muiName: string;
+  };
   child?: DrawerItem[];
 }
 

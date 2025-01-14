@@ -1,7 +1,7 @@
 const assets = {
   images: {
-    event: require("./images/event.jpg"),
-    avatar: require("./images/avatar.jpg"),
+    event: import("./images/event.jpg"),
+    avatar: import("./images/avatar.jpg"),
   },
 };
 

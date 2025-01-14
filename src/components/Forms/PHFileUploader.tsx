@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { CloudUpload as CloudUploadIcon } from "@mui/icons-material";
-import { Box, Button, Input, Stack, Typography } from "@mui/material";
+import { Box, Button, Input, Stack } from "@mui/material";
 
 interface IFileUploadButton {
   label?: string;

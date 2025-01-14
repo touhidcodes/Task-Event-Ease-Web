@@ -1,14 +1,15 @@
 "use server";
 
-import { authKey } from "@/constants/authKey";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
-const setAccessToken = (token: string, option?: any) => {
-  cookies().set(authKey, token);
-  if (option && option.redirect) {
-    redirect(option.redirect);
-  }
+const setAccessToken = async (key: string, value: string) => {
+  const cookieStore = await cookies(); // Await the promise to resolve the cookie store
+  cookieStore.set(key, value, {
+    path: "/",
+    httpOnly: true, // Optional: To ensure the cookie is accessible only via HTTP requests
+    secure: process.env.NODE_ENV === "production", // Optional: To secure cookies in production
+    maxAge: 60 * 60 * 24, // Optional: Set cookie expiry (1 day)
+  });
 };
 
 export default setAccessToken;

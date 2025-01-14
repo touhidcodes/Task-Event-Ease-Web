@@ -1,7 +1,5 @@
-import { Box, List, Stack, Typography } from "@mui/material";
-import Image from "next/image";
-import assets from "@/assets";
-import Link from "next/link";
+import { Box, List, Typography } from "@mui/material";
+
 import { drawerItems } from "@/utils/drawerItems";
 import { UserRole } from "@/types";
 import SideBarItem from "./SideBarItem";

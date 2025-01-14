@@ -21,6 +21,7 @@ const EventsPage = () => {
       }
     } catch (err) {
       toast.success("You have already booked this event!");
+      console.log(err);
     }
   };
 

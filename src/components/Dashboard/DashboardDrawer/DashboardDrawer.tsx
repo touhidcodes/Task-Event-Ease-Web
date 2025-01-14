@@ -13,12 +13,7 @@ import {
   Badge,
   Button,
   ClickAwayListener,
-  FormControl,
-  Menu,
-  MenuItem,
-  Modal,
   Popper,
-  Select,
   Stack,
 } from "@mui/material";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
@@ -65,7 +60,6 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const { data, isLoading } = useGetSingleUserQuery({});
@@ -79,7 +73,6 @@ const DashboardDrawer = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   const handleLogOut = async () => {
-    setIsLoggingOut(true);
     await logoutUser();
     router.push("/");
   };

@@ -43,7 +43,8 @@ instance.interceptors.request.use(
 
 // Add a response interceptor
 instance.interceptors.response.use(
-  //@ts-ignore
+  // @ts-expect-error: The third-party library has no types for this property
+
   (response) => {
     const responseObject: ResponseSuccessType = {
       data: response?.data?.data,
@@ -68,7 +69,7 @@ instance.interceptors.response.use(
 
           if (newAccessToken) {
             // Update access token in storage and set it globally
-            setAccessToken(newAccessToken);
+            setAccessToken("accessToken", newAccessToken);
             // setToLocalStorage(authKey, newAccessToken);
 
             // Set new token to the failed request's Authorization header

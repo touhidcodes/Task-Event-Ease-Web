@@ -17,6 +17,7 @@ export const getUserInfo = () => {
   const authToken = getFromLocalStorage(authKey);
   //   console.log(authToken);
   if (authToken) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const decodedData: any = decodedToken(authToken);
     return {
       ...decodedData,
