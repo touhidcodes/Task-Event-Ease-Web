@@ -1,101 +1,255 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import { TextField, Button, Box, Stack, Typography, Grid } from "@mui/material";
+import Link from "next/link";
+import PHForm from "@/components/Forms/PHForm";
+import PHInput from "@/components/Forms/PHInput";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginValidationSchema } from "@/constants/schema";
+import { useRouter } from "next/navigation";
+import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
+import { userLogin } from "@/services/actions/userLogin";
+
+export default function Login() {
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  const handleLogin = async (values: FieldValues) => {
+    try {
+      const res = await userLogin(values);
+
+      if (res?.data?.token) {
+        toast.success(res?.message);
+        router.push("/dashboard/home");
+      } else {
+        setError(res.message);
+        console.log(res.message);
+      }
+    } catch (err: any) {
+      console.error(err.message);
+    }
+  };
+
+  const handleTestLogin = async (role: "admin" | "user") => {
+    const credentials =
+      role === "admin"
+        ? {
+            identifier: `${process.env.NEXT_PUBLIC_ADMIN_EMAIL}`,
+            password: `${process.env.NEXT_PUBLIC_ADMIN_PASSWORD}`,
+          }
+        : {
+            identifier: `${process.env.NEXT_PUBLIC_USER_EMAIL}`,
+            password: `${process.env.NEXT_PUBLIC_USER_PASSWORD}`,
+          };
+
+    handleLogin(credentials);
+  };
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="min-h-screen flex">
+      {/* Left Panel (Image) */}
+      <Box
+        sx={{
+          backgroundImage: `url("assets/images/event.jpg")`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          height: "100vh",
+          display: { xs: "none", sm: "block" },
+          width: { sm: "50%", md: "33.33%" },
+          color: "#fff",
+          textAlign: "center",
+          backdropFilter: "blur(8px)",
+          backgroundColor: "rgba(255, 255, 255, 0.1)",
+        }}
+      >
+        <Box
+          sx={{
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            padding: "1rem 2rem",
+            borderRadius: "10px",
+            position: "absolute",
+            bottom: "20px",
+            left: "20px",
+            right: "20px",
+          }}
+        >
+          <Typography variant="h4" sx={{ margin: 0 }}>
+            Welcome to Event Ease
+          </Typography>
+          <Typography variant="body1">
+            Experience the magic of the moment.
+          </Typography>
+        </Box>
+      </Box>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      {/* Right Panel (Form) */}
+      <Grid
+        item
+        xs={12}
+        md={6}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          margin: "auto",
+        }}
+      >
+        <Box
+          sx={{
+            width: { xs: "100%", sm: "80%", md: "100%" },
+            padding: { xs: 3, md: 4 },
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          {/* Heading */}
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            color="#0B1134CC"
+            gutterBottom
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Welcome Back!
+          </Typography>
+          <Typography variant="body1" mb={3}>
+            Please login to your account to continue.
+          </Typography>
+
+          {/* Error Message */}
+          {error && (
+            <Typography
+              sx={{
+                color: "red",
+                marginBottom: 2,
+              }}
+            >
+              {error}
+            </Typography>
+          )}
+
+          {/* Form */}
+          <PHForm
+            onSubmit={handleLogin}
+            resolver={zodResolver(loginValidationSchema)}
+            defaultValues={{
+              identifier: "",
+              password: "",
+            }}
           >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            <Stack spacing={2} mb={2}>
+              <Box
+                fontWeight={700}
+                style={{
+                  textAlign: "start",
+                  color: "#00026E",
+                }}
+              >
+                <Typography style={{ marginBottom: "3px", fontWeight: "500" }}>
+                  Email or Username*
+                </Typography>
+                <PHInput
+                  name="identifier"
+                  label="Username or Email"
+                  type="text"
+                  fullWidth
+                />
+              </Box>
+              <Box
+                fontWeight={700}
+                style={{
+                  textAlign: "start",
+                  color: "#00026E",
+                }}
+              >
+                <Typography style={{ marginBottom: "3px", fontWeight: "500" }}>
+                  Password*
+                </Typography>
+                <PHInput
+                  name="password"
+                  label="Password"
+                  type="password"
+                  fullWidth={true}
+                />
+              </Box>
+            </Stack>
+            <Button
+              fullWidth
+              type="submit"
+              variant="contained"
+              sx={{
+                backgroundColor: "#0B1134",
+                color: "white",
+                marginY: 2,
+                "&:hover": {
+                  backgroundColor: "#061022",
+                },
+              }}
+            >
+              Login
+            </Button>
+          </PHForm>
+          <Box
+            sx={{
+              display: "flex",
+            }}
+          >
+            <Button
+              variant="contained"
+              sx={{
+                marginRight: 3,
+                backgroundColor: "#0B1134",
+                color: "white",
+                marginBottom: 2,
+                "&:hover": {
+                  backgroundColor: "#061022",
+                },
+              }}
+              fullWidth
+              onClick={() => handleTestLogin("user")}
+            >
+              Test User
+            </Button>
+            <Button
+              variant="contained"
+              sx={{
+                marginLeft: 3,
+                backgroundColor: "#0B1134",
+                color: "white",
+                marginBottom: 2,
+                "&:hover": {
+                  backgroundColor: "#061022",
+                },
+              }}
+              fullWidth
+              onClick={() => handleTestLogin("admin")}
+            >
+              Test Admin
+            </Button>
+          </Box>
+
+          {/* Additional Links */}
+          <Typography sx={{ mt: 2 }}>
+            Don&apos;t have an account?{" "}
+            <Link href="/register">
+              <Typography
+                component="span"
+                sx={{
+                  color: "#00026E",
+                  fontWeight: "500",
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                }}
+              >
+                Sign Up
+              </Typography>
+            </Link>{" "}
+            Now
+          </Typography>
+        </Box>
+      </Grid>
     </div>
   );
 }

@@ -4,8 +4,8 @@ import { baseApi } from "./baseApi";
 export const attendeeApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getAllAttendees: build.query({
-      query: (eventId) => ({
-        url: `/attendees/${eventId}`,
+      query: () => ({
+        url: `/attendees/all`,
         method: "GET",
       }),
       providesTags: [tagTypes.attendees],

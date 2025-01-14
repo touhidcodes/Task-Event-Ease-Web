@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,8 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { TEvent } from "@/types/Events";
-import { TEventBookings } from "@/types/Bookings";
+import { TEventAttendees } from "@/types/Attendees";
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -26,36 +25,40 @@ const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
-type TEventCardProps = {
-  bookings: TEventBookings[];
+type TAttendeesCardProps = {
+  attendees: TEventAttendees[];
 };
 
-const BookingCardTable = ({ bookings }: TEventCardProps) => {
+const AttendeesCardTable = ({ attendees }: TAttendeesCardProps) => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
+            <StyledTableCell align="center">Username</StyledTableCell>
+            <StyledTableCell align="center">Email</StyledTableCell>
             <StyledTableCell align="center">Name</StyledTableCell>
             <StyledTableCell align="center">Location</StyledTableCell>
             <StyledTableCell align="center">Date</StyledTableCell>
-            <StyledTableCell align="center">Attendees</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {bookings.map((booking: TEventBookings) => (
-            <StyledTableRow key={booking.id}>
+          {attendees.map((attendee: TEventAttendees) => (
+            <StyledTableRow key={attendee.id}>
               <StyledTableCell align="right">
-                {booking?.event?.name}
+                {attendee?.user?.username}
               </StyledTableCell>
               <StyledTableCell align="right">
-                {booking?.event?.location}
+                {attendee?.user?.email}
               </StyledTableCell>
               <StyledTableCell align="right">
-                {booking?.event?.date}
+                {attendee?.event?.name}
               </StyledTableCell>
               <StyledTableCell align="right">
-                {booking?.event?.maxAttendees}
+                {attendee?.event?.location}
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                {attendee?.event?.date}
               </StyledTableCell>
             </StyledTableRow>
           ))}
@@ -65,4 +68,4 @@ const BookingCardTable = ({ bookings }: TEventCardProps) => {
   );
 };
 
-export default BookingCardTable;
+export default AttendeesCardTable;
