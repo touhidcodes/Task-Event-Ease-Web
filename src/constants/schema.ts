@@ -16,17 +16,11 @@ export const registerValidationSchema = z.object({
   password: z.string().min(6, "Must be at least 6 characters"),
 });
 
-export const flatPostValidationSchema = z.object({
-  title: z.string().min(1, "Flat title is required"),
-  image: z.string({ required_error: "Image file is required" }),
-  squareFeet: z.string().min(1, "Square feet must be a positive number"),
-  totalBedrooms: z.string().min(1, "Total bedrooms must be a positive number"),
-  totalRooms: z.string().min(1, "Total rooms must be a positive number"),
-  amenities: z.string().min(1, "Amenities description is required"),
+export const eventPostValidationSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  date: z.string().min(1, "date is required"),
   location: z.string().min(1, "Location is required"),
-  description: z.string().min(1, "Description is required"),
-  rent: z.string().min(1, "Rent must be a positive number"),
-  advanceAmount: z.string().min(1, "Advance amount must be a positive number"),
+  maxAttendees: z.string().min(1, "Attendees must be a positive number"),
 });
 
 export const changePasswordValidationSchema = z
