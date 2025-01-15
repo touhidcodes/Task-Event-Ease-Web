@@ -9,10 +9,10 @@ const useUserInfo = async () => {
   // console.log(authToken);
 
   if (authToken) {
-    const decodedData: JwtPayload & { role: any } = jwtDecode(
-      authToken // Since authToken is already a string, you can pass it directly
+    const decodedData: JwtPayload & { role: string } = jwtDecode(
+      authToken
     ) as JwtPayload & {
-      role: any;
+      role: string;
     };
 
     return {

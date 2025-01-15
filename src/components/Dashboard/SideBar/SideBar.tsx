@@ -6,36 +6,19 @@ import SideBarItem from "./SideBarItem";
 import useUserInfo from "@/hooks/useUserInfo";
 import { useEffect, useState } from "react";
 
-import { io } from "socket.io-client";
-
-const socket = io("http://localhost:5000"); // Replace with your server's URL and port
-
-socket.on("connect", () => {
-  console.log("Connected to the server:", socket.id);
-});
-
-socket.on("disconnect", () => {
-  console.log("Disconnected from the server");
-});
-
-socket.on("new_attendee", (data) => {
-  console.log("New Attendee Notification:", data.message);
-  // showNotification(data.message); // Function to display the notification
-});
-
 const SideBar = () => {
+  const userInfoPromise = useUserInfo();
   const [userRole, setUserRole] = useState<string>("");
   useEffect(() => {
     const fetchUserInfo = async () => {
-      const userInfo = await useUserInfo();
-
+      const userInfo = await userInfoPromise;
       if (userInfo) {
         setUserRole(userInfo.role || "");
       }
     };
 
     fetchUserInfo();
-  }, []);
+  }, [userInfoPromise]);
 
   return (
     <Box style={{ height: "100vh" }}>

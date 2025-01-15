@@ -43,7 +43,7 @@ instance.interceptors.request.use(
 
 // Add a response interceptor
 instance.interceptors.response.use(
-  //@ts-ignore
+  //@ts-expect-error: there might some error
   (response) => {
     const responseObject: ResponseSuccessType = {
       data: response?.data?.data,

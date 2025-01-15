@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Snackbar, Alert } from "@mui/material";
 import { useSocket } from "@/hooks/useSocket";
-import { toast } from "sonner";
-import { TEvent } from "@/types/Events";
 
 const Notifications = () => {
   const { socket } = useSocket();
@@ -33,11 +31,7 @@ const Notifications = () => {
         });
         setOpen(true);
       };
-      const handleEventCreate = (data: {
-        message: string;
-        eventId: string;
-        name: string;
-      }) => {
+      const handleEventCreate = () => {
         setNotification({
           message: `New Event has been created.`,
           severity: "success",
