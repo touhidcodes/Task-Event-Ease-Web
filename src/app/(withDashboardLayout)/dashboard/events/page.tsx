@@ -15,12 +15,15 @@ const EventsPage = () => {
     const eventId = { eventId: id };
     try {
       const res = await bookingRequest(eventId);
-
+      console.log(res);
       if (res?.data?.id) {
-        toast.success("event booked successfully!");
+        toast.success("Event booked successfully!");
+      }
+      if (!res?.data) {
+        toast.success("Event already booked !");
       }
     } catch (err) {
-      toast.success("You have already booked this event!");
+      toast.success("something went wrong!");
       console.log(err);
     }
   };
@@ -32,7 +35,7 @@ const EventsPage = () => {
   return (
     <Container sx={{ paddingBottom: "50px" }}>
       <Typography variant="h4" component="h1" gutterBottom my={3}>
-        All Posts
+        All Events
       </Typography>
       <EventCardTable events={events} handleBooking={handleBooking} />
     </Container>

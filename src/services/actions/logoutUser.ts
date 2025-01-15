@@ -1,8 +1,8 @@
-import { authKey } from "@/constants/authKey";
-import Cookies from "js-cookie";
+"use server";
+import { cookies } from "next/headers";
 
-export const logoutUser = () => {
-  Cookies.remove(authKey);
-  Cookies.remove("refreshToken");
-  // window.location.reload();
+export const logoutUser = async () => {
+  const cookieStore = await cookies();
+  cookieStore.delete("accessToken");
+  cookieStore.delete("refreshToken");
 };

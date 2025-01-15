@@ -33,7 +33,7 @@ const StyledInformationBox = styled(Box)(({ theme }) => ({
 
 const ProfilePage = () => {
   const { data: profileData, isLoading } = useGetUserWithProfileQuery({});
-  console.log(profileData);
+  // console.log(profileData);
 
   if (isLoading) {
     return <Loading />;

@@ -4,6 +4,7 @@ import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import Providers from "@/lib/providers/Providers";
 import { Toaster } from "sonner";
+import { Notifications } from "@mui/icons-material";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +32,7 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
+          <Notifications />
           <AppRouterCacheProvider>
             <Toaster position="top-right" />
             {children}

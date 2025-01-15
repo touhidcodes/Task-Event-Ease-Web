@@ -2,8 +2,8 @@ import { authKey } from "@/constants/authKey";
 import setAccessToken from "@/services/actions/setAccessToken";
 import { getNewAccessToken } from "@/services/auth.services";
 import { IGenericErrorResponse, ResponseSuccessType } from "@/types";
+import { getCookie } from "@/utils/nextCookies";
 import axios from "axios";
-import Cookies from "js-cookie";
 
 const instance = axios.create();
 instance.defaults.headers.post["Content-Type"] = "application/json";
@@ -28,7 +28,7 @@ const onRefreshed = (token: string) => {
 // Add a request interceptor
 instance.interceptors.request.use(
   async function (config) {
-    const accessToken = Cookies.get(authKey);
+    const accessToken = await getCookie(authKey);
     // console.log(accessToken);
 
     if (accessToken) {
@@ -43,8 +43,7 @@ instance.interceptors.request.use(
 
 // Add a response interceptor
 instance.interceptors.response.use(
-  // @ts-expect-error: The third-party library has no types for this property
-
+  //@ts-ignore
   (response) => {
     const responseObject: ResponseSuccessType = {
       data: response?.data?.data,
@@ -106,7 +105,7 @@ instance.interceptors.response.use(
       errorMessages: error?.response?.data?.message,
     };
 
-    return Promise.reject(responseObject);
+    return Promise.reject(responseObject); // Reject error
   }
 );
 
