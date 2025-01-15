@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
-const SOCKET_URL = "http://localhost:5000"; // Replace with your server URL
+const SOCKET_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
 
 export const useSocket = () => {
   const [socket, setSocket] = useState<Socket | null>(null);

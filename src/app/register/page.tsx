@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Button, Box, Stack, Typography, Grid } from "@mui/material";
 import Link from "next/link";
 import PHForm from "@/components/Forms/PHForm";
@@ -38,8 +37,8 @@ export default function Login() {
           router.push("/dashboard/home");
         }
       }
-    } catch (err: any) {
-      console.error(err.message);
+    } catch (err) {
+      console.error(err);
     }
   };
   return (
